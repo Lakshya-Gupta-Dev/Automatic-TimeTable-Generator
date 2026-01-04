@@ -1,18 +1,21 @@
 # Maven
 /target/
 
-# IDE folders
-/.idea/
+# Compiled files
+bin/
+*.class
+
+# Eclipse / IDE
 .metadata/
 .project
 .classpath
 .settings/
 
-# Eclipse / VS Code
-bin/
+# IntelliJ / VS Code
+.idea/
 .vscode/
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
