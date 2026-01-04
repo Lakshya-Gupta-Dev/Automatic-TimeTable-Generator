@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Departments Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      body {
+        display: flex;
+        height: 100vh;
+        background: #f0f4f8;
+      }
+      .sidebar {
+        width: 260px;
+        background: #1f2937;
+        color: #fff;
+        border-right: 1px solid #ccc;
+        padding: 20px 0;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+      }
+      .sidebar h3 {
+        padding: 0 20px;
+        margin-bottom: 25px;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #9ca3af;
+      }
+      .sidebar a {
+        text-decoration: none;
+        color: #d1d5db;
+        padding: 12px 25px;
+        display: flex;
+        align-items: center;
+        transition: 0.3s;
+        border-radius: 8px;
+        margin: 2px 10px;
+      }
+      .sidebar a:hover {
+        background: #3b82f6;
+        color: #fff;
+        font-weight: bold;
+      }
+      .sidebar a i {
+        margin-right: 12px;
+        font-size: 18px;
+      }
+      .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: #f9fafb;
+        overflow: hidden;
+        min-height: 100vh;
+        transition: margin-left 0.3s;
+      }
+      .navbar {
+        height: 65px;
+        background: #fff;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 25px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        border-radius: 0 0 15px 15px;
+      }
+      .navbar .search-box input {
+        width: 300px;
+        padding: 8px 15px;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        transition: 0.3s;
+      }
+      .navbar .search-box input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+      }
+      .navbar .profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 500;
+        color: #374151;
+      }
+      .navbar .profile img {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 2px solid #3b82f6;
+        background: #ccc;
+      }
+      .logout-btn {
+        background-color: #ef4444;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+
+        font-size: 14px;
+      }
+      .logout-btn:hover {
+        background-color: #dc2626;
+      }
+      .content {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+        margin: 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      h4 {
+        margin-top: 10px;
+        margin-left: 50px;
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+      }
+      .footer {
+        height: 55px;
+        background: #1f2937;
+        border-top: 1px solid #374151;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: #9ca3af;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+        flex-shrink: 0;
+        overflow: hidden;
+        transition: left 0.3s;
+      }
+      .table-container {
+        flex: 1;
+        overflow-y: auto;
+        max-height: 300px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+      .btn {
+        text-decoration: none;
+        display: inline-block;
+        border: none;
+        color: rgb(28, 21, 6);
+        text-align: center;
+        background-color: #3b82f6;
+      }
+      .btn:hover {
+        background-color: #2563eb;
+        transform: scale(0.98);
+      }
+      .action-btn {
+        margin: 0 3px;
+        cursor: pointer;
+        padding: 3px 6px;
+        border-radius: 4px;
+        color: #fff;
+      }
+      .action-btn-warning {
+        background-color: #f59e0b;
+      }
+      .action-btn-danger {
+        background-color: #ef4444;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <h3>Menu</h3>
+      <a href="home.html">🏠 Home</a>
+      <a href="schedules.html">📅 Schedules</a>
+      <a href="departments.html">🏢 Departments</a>
+      <a href="classes.html">🎓 Classes</a>
+      <a href="subject.html">📘 Subject</a>
+      <a href="section.html">🔖 section</a>
+      <a href="teachers.html">👨‍🏫 Teachers</a>
+      <a href="tsmapping.html">🔗 Teacher Subject Mapping</a>
+      <a href="Room.html">🏫 Rooms</a>
+      <a href="timeslot.html">⏱ Time Slot</a>
+    </div>
+
+    <div class="main-content">
+      <div class="navbar">
+        <div class="search-box">
+          <input type="text" placeholder="Search..." id="searchInput" />
+        </div>
+        <div class="profile">
+          <img src="sc1.png" alt="User" />
+          <span class="auth-username">Loading...</span>
+          <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+      </div>
+
+      <h4>Departments</h4>
+
+      <div class="content">
+        <h5 class="mb-4">Information about the Departments</h5>
+        <form id="deptForm">
+          <div class="row mb-2">
+            <div class="col-md-6">
+              <label class="form-label">Department Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="deptName"
+                placeholder="Department Name"
+                required
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Department Head</label>
+              <input
+                type="text"
+                class="form-control"
+                id="deptHead"
+                placeholder="HOD Name"
+                required
+              />
+            </div>
+          </div>
+          <br />
+          <div class="text-center mb-4">
+            <button type="submit" class="btn">Confirm</button>
+          </div>
+        </form>
+
+        <div class="table-container mt-2">
+          <table class="table table-bordered table-striped mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Department Name</th>
+                <th>Head of Department</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="data-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="footer">Time Table Generator || By SVVV Students 2025</div>
+    </div>
+
+    <script>
+      const apiBase = "http://localhost:8080/api/user/departments";
+      const userApi = "http://localhost:8080/api/user/profile";
+      const token = localStorage.getItem("token");
+      const usernameSpan = document.querySelector(".auth-username");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const dataBody = document.getElementById("data-body");
+      const deptForm = document.getElementById("deptForm");
+      let editId = null;
+
+      // 🧠 Redirect if no token
+      if (!token) {
+        alert("Please login first!");
+        window.location.href = "login1.html";
+      }
+
+      // ✅ Fetch with Authorization
+      async function authFetch(url, options = {}) {
+        const headers = options.headers || {};
+        headers["Authorization"] = "Bearer " + token;
+        if (!headers["Content-Type"])
+          headers["Content-Type"] = "application/json";
+        const res = await fetch(url, { ...options, headers });
+        if (res.status === 403 || res.status === 401) {
+          localStorage.removeItem("token");
+          window.location.href = "login1.html";
+        }
+        return res;
+      }
+
+      // ✅ Load username
+      authFetch(userApi)
+        .then((res) => res.json())
+        .then((user) => {
+          usernameSpan.textContent = user.username || "User";
+        })
+        .catch(() => (usernameSpan.textContent = "User"));
+
+      // ✅ Logout function
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "login1.html";
+      });
+
+      // ✅ Fetch Departments
+      function fetchDepartments() {
+        authFetch(apiBase)
+          .then((res) => res.json())
+          .then((data) => renderTable(data))
+          .catch((err) => console.error("Error fetching:", err));
+      }
+
+      // ✅ Render Table
+      function renderTable(data) {
+        dataBody.innerHTML = "";
+        data.forEach((dept) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${dept.id}</td>
+            <td>${dept.deptName}</td>
+            <td>${dept.deptHead}</td>
+            <td>
+              <span class="action-btn action-btn-warning" onclick="editDepartment(${dept.id}, '${dept.deptName}', '${dept.deptHead}')">Edit</span>
+              <span class="action-btn action-btn-danger" onclick="deleteDepartment(${dept.id})">Delete</span>
+            </td>
+          `;
+          dataBody.appendChild(tr);
+        });
+      }
+
+      // ✅ Add or Update Department
+      deptForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const deptData = {
+          deptName: document.getElementById("deptName").value,
+          deptHead: document.getElementById("deptHead").value,
+        };
+
+        const method = editId ? "PUT" : "POST";
+        const url = editId ? `${apiBase}/${editId}` : apiBase;
+
+        authFetch(url, { method, body: JSON.stringify(deptData) })
+          .then((res) => res.json())
+          .then(() => {
+            alert(editId ? "Department updated!" : "Department added!");
+            deptForm.reset();
+            editId = null;
+            fetchDepartments();
+          })
+          .catch((err) => alert("Error: " + err.message));
+      });
+
+      // ✅ Edit Department
+      function editDepartment(id, name, head) {
+        editId = id;
+        document.getElementById("deptName").value = name;
+        document.getElementById("deptHead").value = head;
+      }
+
+      // ✅ Delete Department
+      function deleteDepartment(id) {
+        if (confirm("Are you sure you want to delete this department?")) {
+          authFetch(`${apiBase}/${id}`, { method: "DELETE" })
+            .then((res) => res.text())
+            .then((msg) => {
+              alert(msg);
+              fetchDepartments();
+            });
+        }
+      }
+
+      // ✅ Search Filter
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase();
+        dataBody.querySelectorAll("tr").forEach((row) => {
+          row.style.display = row.textContent.toLowerCase().includes(query)
+            ? ""
+            : "none";
+        });
+      });
+
+      // ✅ Initial Load
+      fetchDepartments();
+    </script>
+  </body>
+</html>

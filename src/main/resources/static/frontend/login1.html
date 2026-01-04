@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Time Table Generator - Login</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+body {
+  background: linear-gradient(135deg, #4a6cf7, #6a11cb, #ff4e50, #ff8c00);
+  background-size: 400% 400%;
+  animation: gradientBG 12s ease infinite;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+header {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo img {
+  width: 55px;
+  height: 55px;
+  border-radius: 12px;
+  border: 2px solid white;
+  background: white;
+  padding: 5px;
+}
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
+}
+.login-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-box {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 45px;
+  border-radius: 20px;
+  width: 370px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+}
+.login-box h2 {
+  margin-bottom: 20px;
+  color: #fff;
+  font-size: 1.9rem;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+.login-box input {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+.login-box input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+.login-box button {
+  margin-top: 18px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #6a11cb, #2575fc, #ff0080);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.login-box a {
+  display: block;
+  margin-top: 15px;
+  text-decoration: none;
+  color: #ffdd57;
+}
+.footer {
+  text-align: center;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <img src="https://img.icons8.com/color/96/calendar--v1.png" alt="calendar logo"/>
+    <div>
+      <h1>Time Table Generator</h1>
+      <p>Organize | Plan | Achieve</p>
+    </div>
+  </div>
+</header>
+
+<div class="login-container">
+  <div class="login-box">
+    <a href="register1.html">Don’t have an account? Register here</a>
+    <h2>Sign In</h2>
+    <form id="loginForm">
+      <input type="text" name="username" placeholder="Enter Username" required />
+      <input type="password" name="password" placeholder="Enter Password" required />
+      <button type="submit">Login</button>
+      <a href="#">Forgot Password?</a>
+    </form>
+  </div>
+</div>
+
+<div class="footer">
+  <p>&copy; 2025 MyWebsite | All Rights Reserved</p>
+</div>
+
+<!--   <script>
+document.getElementById("loginForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const formData = Object.fromEntries(new FormData(this));
+
+  try {
+    const res = await fetch("/api/users/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    });
+
+    const contentType = res.headers.get("content-type");
+    let data;
+
+    if (contentType && contentType.includes("application/json")) {
+      data = await res.json();
+    } else {
+      data = await res.text();
+    }
+
+    if (res.ok) {
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        alert("Login Successful 🎉");
+        window.location.href = "home.html";
+      } else {
+        alert("Login Successful (no token received)");
+      }
+    } else {
+      alert("Login Failed ❌ " + (data.message || data));
+    }
+
+  } catch (err) {
+    alert("Error: " + err.message);
+  }
+});
+</script>  -->
+
+
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const formData = Object.fromEntries(new FormData(this));
+
+  try {
+    const res = await fetch("/api/users/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    });
+
+    const contentType = res.headers.get("content-type");
+    let data;
+
+    if (contentType && contentType.includes("application/json")) {
+      data = await res.json();
+    } else {
+      data = await res.text();
+    }
+
+    if (res.ok) {
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+
+        // ✅ backend-only admin check — based on entered username
+        if (formData.username.trim().toLowerCase() === "admin") {
+          alert("Welcome Admin 🎩");
+          window.location.href = "adminhome.html";
+        } else {
+          alert("Login Successful 🎉");
+          window.location.href = "home.html";
+        }
+
+      } else {
+        alert("Login Successful (no token received)");
+      }
+    } else {
+      alert("Login Failed ❌ " + (data.message || data));
+    }
+
+  } catch (err) {
+    alert("Error: " + err.message);
+  }
+});
+</script>
+
+</body>
+</html>

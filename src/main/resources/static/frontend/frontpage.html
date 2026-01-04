@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Table Generator - Front</title>
+    <link rel="stylesheet" href="frontpage_style.css">
+</head>
+<body>
+    <!---------navbar in website-->
+    <header>
+        <nav>
+            <div class="left">Time Table Generator</div>
+            <div class="right">
+                <ul>
+                    <li class="log"><a href="register1.html"><h3>Register</h3></a></li>
+                    <li class="log"><a href="login1.html"><h3>login</h3></a></li>
+                    <li id="dark"><a href="#"><h3>Light Mode</h3></a></li>
+                </ul> 
+            </div>
+        </nav>
+    </header>
+    <!---------start a first secotion --------->
+<div class="second"><pre class="presection">          
+     <h1>           Platform for managing
+           courses and
+           timetables.</h1> </pre>  
+
+ <p>preparing exam schedule using genetic algorithm</p><br>
+<button type="button" class="consu">Consult the timetables</button>
+
+</div>
+ <!---------end a first secotion --------->
+ 
+
+<script>
+
+      //Dark mode
+        var btn= document.querySelector("#dark");
+  var body= document.querySelector("body");
+  var hading= document.querySelector("h3");
+  var pare= document.querySelector("p");
+ 
+var flag=0;
+  btn.addEventListener("click" ,function(){
+    if(flag==0){
+        body.style.backgroundColor="black";
+         btn.textContent="Dark mode";
+         pare.style.color="white";
+
+        
+            flag =1;
+    } else if(flag==1){ 
+        body.style.backgroundColor="rgb(219, 225, 253)";
+       btn.textContent="Light mode";
+       pare.style.color="black";
+        flag=0;
+    }
+  
+})
+//end dark mode
+
+    </script>
+</body>
+</html>    

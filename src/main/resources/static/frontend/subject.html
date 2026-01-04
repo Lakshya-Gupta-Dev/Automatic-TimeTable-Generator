@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subjects Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+/* ==== GLOBAL RESET ==== */
+*{
+  margin:0; padding:0; box-sizing:border-box;
+  font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+}
+
+body{
+  display:flex;
+  height:100vh;
+  background:#f0f4f8;
+  overflow:hidden;
+}
+
+/* ==== SIDEBAR ==== */
+.sidebar{
+  width:260px;
+  background:#1f2937;
+  color:#fff;
+  padding:20px 0;
+  display:flex;
+  flex-direction:column;
+  flex-shrink:0;
+  overflow-y:auto;
+  border-right:1px solid #ccc;
+}
+
+.sidebar h3{
+  padding:0 20px;
+  margin-bottom:25px;
+  font-size:16px;
+  color:#9ca3af;
+  text-transform:uppercase;
+}
+
+.sidebar a{
+  text-decoration:none;
+  color:#d1d5db;
+  padding:12px 25px;
+  display:flex;
+  align-items:center;
+  border-radius:8px;
+  margin:2px 10px;
+  transition:.3s;
+}
+.sidebar a:hover{
+  background:#3b82f6;
+  color:#fff;
+  font-weight:bold;
+}
+
+/* ==== MAIN CONTENT ==== */
+.main-content{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  background:#f9fafb;
+}
+
+/* ==== NAVBAR ==== */
+.navbar{
+  height:65px;
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+  display:flex;
+  align-items:center;
+  padding:0 25px;
+  gap:20px;              /* new */
+  justify-content:flex-start;  /* changed from space-between */
+}
+
+.navbar .search-box{
+  margin-left:0px;      /* new */
+}
+
+.navbar .navbar-spacer{
+  flex:1;                /* pushes profile to right */
+}
+
+.navbar .search-box input{
+  width:300px;
+  padding:8px 15px;
+  border:1px solid #cbd5e1;
+  border-radius:10px;
+}
+
+/* ==== NAVBAR ==== */
+
+
+.navbar .profile{
+  display:flex; gap:12px; align-items:center;
+}
+
+.navbar .profile img{
+  width:38px; height:38px;
+  border-radius:50%;
+  border:2px solid #3b82f6;
+}
+
+.navbar .profile button{
+  background:#ef4444;
+  color:#fff;
+  border:none;
+  padding:6px 12px;
+  border-radius:8px;
+  font-size:16px;
+  cursor:pointer;
+}
+.navbar .profile button:hover{ background:#dc2626; }
+
+/* ==== PAGE TITLE ==== */
+
+
+/* ==== CONTENT BOX ==== */
+.content{
+  background:#fff;
+  margin:20px;
+  padding:20px;
+  border-radius:12px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+/* ==== SCROLLABLE SUBJECT LIST ==== */
+.table-container{
+  flex:1;
+  overflow-y:auto;
+  border:1px solid #ddd;
+  border-radius:8px;
+  margin-top:20px;
+  max-height:calc(100vh - 360px);
+}
+
+.table-container table{
+  min-width:600px;
+}
+
+/* ==== FOOTER ==== */
+.footer{
+  height:55px;
+  background:#1f2937;
+  color:#9ca3af;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-shrink:0;
+}
+
+/* Buttons */
+.btn{
+  border:none;
+  padding:5px 10px;
+  border-radius:5px;
+  color:#fff;
+  background:#4e69f3;
+}
+.btn:hover{ background:#3f58d9; }
+
+.action-btn-warning{ background:#f59e0b; }
+.action-btn-danger{ background:#ef4444; }
+
+/* ==== RESPONSIVE ==== */
+@media(max-width:900px){
+  .navbar .search-box input{ width:180px; }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+      <h3>Menu</h3>
+      <a href="home.html">🏠 Home</a>
+      <a href="schedules.html">📅 Schedules</a>
+      <a href="departments.html">🏢 Departments</a>
+      <a href="classes.html">🎓 Classes</a>
+      <a href="subject.html">📘 Subject</a>
+      <a href="section.html">🔖 section</a>
+      <a href="teachers.html">👨‍🏫 Teachers</a>
+      <a href="tsmapping.html">🔗 Teacher Subject Mapping</a>
+      <a href="Room.html">🏫 Rooms</a>
+      <a href="timeslot.html">⏱ Time Slot</a>
+</div>
+
+<div class="main-content">
+
+<div class="navbar">
+    <span id="menuToggle"></span>
+    <div class="search-box"><input type="text" id="search-box" placeholder="Search subjects..."></div>
+     <div class="navbar-spacer"></div>
+    <div class="profile">
+        <img src="sc1.png">
+        <span class="auth-username">Loading...</span>
+        <button id="logoutBtn">Logout</button>
+    </div>
+</div>
+
+
+
+<div class="content">
+<h5 class="mb-4">Information about Subjects</h5>
+
+<form id="subject-form">
+<div class="row mb-3">
+
+<div class="col-md-3">
+<label class="form-label">Class *</label>
+<select class="form-control" id="course-select" required>
+<option value="">Select Class</option>
+</select>
+</div>
+
+<div class="col-md-3">
+<label class="form-label">Semester *</label>
+<select class="form-control" id="semester" required>
+<option value="">Select Semester</option>
+<option value="1">I</option><option value="2">II</option>
+<option value="3">III</option><option value="4">IV</option>
+<option value="5">V</option><option value="6">VI</option>
+<option value="7">VII</option><option value="8">VIII</option>
+<option value="9">IX</option><option value="10">X</option>
+</select>
+</div>
+
+<div class="col-md-3">
+<label class="form-label">Branch *</label>
+<input type="text" id="branch-input" class="form-control" placeholder="Enter Branch (ex: CSE)" required>
+</div>
+
+<div class="col-md-3">
+<label class="form-label">Subject Name *</label>
+<input type="text" id="subject-name" class="form-control" required>
+</div>
+
+<div class="col-md-3 mt-3">
+<label class="form-label">Subject Type *</label>
+<input type="text" id="subject-type" class="form-control" required>
+</div>
+
+<div class="col-md-3 mt-3">
+<label class="form-label">Credits *</label>
+<input type="number" id="subject-credit" class="form-control" required>
+</div>
+
+</div>
+
+<div class="text-center mb-3">
+<button type="submit" class="btn" id="submit-btn">Confirm</button>
+<button type="button" id="reset-btn" class="btn" style="background:#6b7280; margin-left:10px;">Reset</button>
+</div>
+</form>
+
+<h6>Subjects List:</h6>
+
+<div class="table-container">
+<table class="table table-bordered table-striped mb-0">
+<thead class="table-dark">
+<tr>
+<th>Class</th>
+<th>Semester</th>
+<th>Branch</th>
+<th>Subject</th>
+<th>Type</th>
+<th>Credits</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="data-body">
+<tr><td colspan="7" class="text-center">No subjects found.</td></tr>
+</tbody>
+</table>
+</div>
+
+</div> <!-- content -->
+
+<div class="footer">Time Table Generator || By SVVV Students 2025</div>
+
+</div> <!-- main-content -->
+
+<script>
+const token = localStorage.getItem("token");
+if(!token) location.href="login1.html";
+
+const apiUrl="http://localhost:8080/api/user/subjects";
+const classUrl="http://localhost:8080/api/user/course/names";
+const profileUrl="http://localhost:8080/api/user/profile";
+
+const courseSelect=document.getElementById("course-select");
+const branchInput=document.getElementById("branch-input");
+const dataBody=document.getElementById("data-body");
+const submitBtn=document.getElementById("submit-btn");
+const searchBox=document.getElementById("search-box");
+let editId=null;
+
+document.getElementById("menuToggle").onclick=()=>{
+    document.getElementById("sidebar").classList.toggle("open");
+};
+
+document.getElementById("logoutBtn").onclick=()=>{
+    localStorage.removeItem("token");
+    location.href="login1.html";
+};
+
+function toRoman(n){
+    return ["I","II","III","IV","V","VI","VII","VIII","IX","X"][n-1] || n;
+}
+
+async function loadProfile(){
+  const r=await fetch(profileUrl,{headers:{Authorization:"Bearer "+token}});
+  const u=await r.json();
+  document.querySelector(".auth-username").textContent=u.username;
+}
+
+async function loadClasses(){
+  const r=await fetch(classUrl,{headers:{Authorization:"Bearer "+token}});
+  const list=await r.json();
+  list.forEach(c=>{
+    let o=document.createElement("option");
+    o.value=c.courseName || c;
+    o.textContent=o.value;
+    courseSelect.appendChild(o);
+  });
+}
+
+async function loadSubjects(q=""){
+  let url=apiUrl;
+  if(q) url+="/search/"+q;
+
+  const r=await fetch(url,{headers:{Authorization:"Bearer "+token}});
+  const list=await r.json();
+
+  dataBody.innerHTML="";
+
+  if(list.length===0){
+    dataBody.innerHTML='<tr><td colspan="7" class="text-center">No subjects found.</td></tr>';
+    return;
+  }
+
+  list.forEach(s=>{
+    dataBody.innerHTML+=`
+      <tr>
+        <td>${s.courseName}</td>
+        <td>${toRoman(s.semester)}</td>
+        <td>${s.branch}</td>
+        <td>${s.subName}</td>
+        <td>${s.subType}</td>
+        <td>${s.subCredit}</td>
+        <td>
+          <button class="btn action-btn-warning" onclick="editSubject('${s.subId}')">Edit</button>
+          <button class="btn action-btn-danger" onclick="deleteSubject('${s.subId}')">Delete</button>
+        </td>
+      </tr>`;
+  });
+}
+
+document.getElementById("subject-form").onsubmit=async e=>{
+  e.preventDefault();
+
+  let data={
+    courseName:courseSelect.value,
+    semester:parseInt(document.getElementById("semester").value),
+    branch:branchInput.value.trim(),
+    subName:document.getElementById("subject-name").value.trim(),
+    subType:document.getElementById("subject-type").value.trim(),
+    subCredit:parseInt(document.getElementById("subject-credit").value)
+  };
+
+  let url=apiUrl+"/save", method="POST";
+  if(editId){ url=apiUrl+"/update/"+editId; method="PUT"; }
+
+  await fetch(url,{
+    method,
+    headers:{ "Content-Type":"application/json", Authorization:"Bearer "+token },
+    body:JSON.stringify(data)
+  });
+
+  e.target.reset();
+  editId=null;
+  submitBtn.textContent="Confirm";
+  loadSubjects();
+};
+
+window.editSubject=async id=>{
+  const r=await fetch(apiUrl+"/"+id,{headers:{Authorization:"Bearer "+token}});
+  const s=await r.json();
+
+  courseSelect.value=s.courseName;
+  document.getElementById("semester").value=s.semester;
+  branchInput.value=s.branch;
+  document.getElementById("subject-name").value=s.subName;
+  document.getElementById("subject-type").value=s.subType;
+  document.getElementById("subject-credit").value=s.subCredit;
+
+  editId=id;
+  submitBtn.textContent="Update";
+  scrollTo({top:0,behavior:"smooth"});
+};
+
+window.deleteSubject=async id=>{
+  if(!confirm("Delete?")) return;
+  await fetch(apiUrl+"/"+id,{method:"DELETE",headers:{Authorization:"Bearer "+token}});
+  loadSubjects();
+};
+
+searchBox.oninput=e=>{
+  clearTimeout(window.t);
+  window.t=setTimeout(()=>loadSubjects(e.target.value),300);
+};
+
+(async()=>{
+  await loadProfile();
+  await loadClasses();
+  await loadSubjects();
+})();
+</script>
+
+</body>
+</html>

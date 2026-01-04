@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Home</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; }
+      body { display: flex; min-height: 100vh; background: #f4f7fb; }
+
+      .sidebar { width: 230px; background: #1a1a2e; color: white; height: 100vh; padding: 20px; position: fixed; display: flex; flex-direction: column; transition: all 0.3s ease; z-index: 999; }
+      .sidebar h3 {
+        padding: 0 20px;
+        margin-bottom: 0px;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #9ca3af;
+      }
+
+      .sidebar a { display: block; color: white; padding: 10px; margin: 4px 0; border-radius: 6px; text-decoration: none; transition: 0.3s; }
+      .sidebar a.active,
+      .sidebar a:hover {
+        background: #3b82f6;
+        color: white;
+        font-weight: bold;
+      }
+      .main-content { margin-left: 230px; width: calc(100% - 230px); padding: 20px; display: flex; flex-direction: column; min-height: 100vh; transition: all 0.3s ease; }
+
+      .navbar { background: #fff; border-radius: 10px; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); position: relative; z-index: 1000; }
+
+      .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #1a1a2e; }
+
+      .navbar .profile { display: flex; align-items: center; gap: 10px; position: relative; margin-left: auto; }
+      .navbar .profile img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #00bcd4; }
+      .navbar .profile span { font-weight: 500; font-size: 15px; color: #111; cursor: pointer; }
+      .logout-btn { padding: 6px 12px; background: #dc2626; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; }
+
+      .logout-dropdown { display: none; position: absolute; top: 50px; right: 0; background: #fff; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); padding: 8px; }
+      .logout-dropdown button { width: 100%; background: #dc2626; color: #fff; border: none; border-radius: 6px; padding: 6px; cursor: pointer; }
+
+      .content { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.09); margin-top: 30px; flex-grow: 1; overflow-x: auto; }
+
+      .second { display: flex; gap: 20px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
+      .con1 { flex: 1; min-width: 150px; background: #fff; border-radius: 10px; padding: 20px; text-align: center; border: 2px solid black; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+      .con1 img { width: 100px; height: 100px; border-radius: 10px; margin-bottom: 10px; }
+      .con1 button { margin-top: 10px; border: 2px solid black; background: #3b82f6; color: #fff; padding: 6px 14px; border-radius: 6px; cursor: pointer; }
+
+      .footer { text-align: center; padding: 10px; background: #1a1a2e; color: white; border-radius: 10px; margin-top: 30px; }
+
+      #previewContainer { margin-top: 15px; border: 1px solid #ccc; border-radius: 8px; padding: 15px; display: none; overflow-x: auto; }
+      #previewContainer h5 { text-align: center; margin-bottom: 15px; }
+      #previewContainer table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 14px; }
+      #previewContainer th, #previewContainer td { border: 1px solid #999; padding: 8px; text-align: center; vertical-align: middle; white-space: pre-line; }
+
+      .section-header { background: #eaeaea; font-weight: 600; padding: 10px; text-align: center; border: 1px solid #aaa; margin-bottom: 8px; }
+
+      #exportOptions { display: none; gap: 20px; margin-bottom: 15px; justify-content: center; }
+
+      @media (max-width: 992px) { .menu-toggle { display: block; } .sidebar { left: -250px; position: fixed; top: 0; height: 100%; } .sidebar.active { left: 0; } .main-content { margin-left: 0; width: 100%; } .navbar .profile .logout-btn { display: none; } .logout-dropdown.show { display: block; } }
+      @media (max-width: 768px) { .content { padding: 15px; } .con1 { min-width: 140px; } #previewContainer table { font-size: 12px; } .navbar .profile img { width: 35px; height: 35px; } }
+      @media (max-width: 480px) { .navbar { flex-wrap: wrap; padding: 8px 15px; } .navbar .profile span { font-size: 13px; } h4 { font-size: 16px; } }
+    </style>
+  </head>
+
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <h3>Menu</h3>
+      <a href="home.html">🏠 Home</a>
+      <a href="schedules.html">📅 Schedules</a>
+      <a href="departments.html">🏢 Departments</a>
+      <a href="classes.html" >🎓 Classes</a>
+      <a href="subject.html">📘 Subject</a>
+      <a href="section.html">🔖 section</a>
+      <a href="teachers.html">👨‍🏫 Teachers</a>
+      <a href="tsmapping.html">🔗 Teacher Subject Mapping</a>
+      <a href="Room.html">🏫 Rooms</a>
+      <a href="timeslot.html">⏱ Time Slot</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="navbar">
+        <div class="menu-toggle" id="menuToggle">☰</div>
+        <div class="profile" id="profileMenu">
+          <img src="sc1.png" alt="User" />
+          <span id="usernameDisplay">Loading...</span>
+          <button class="logout-btn" onclick="logout()">Logout</button>
+          <div class="logout-dropdown" id="logoutDropdown">
+            <button onclick="logout()">Logout</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <h4>Welcome to Timetable Dashboard 👋</h4>
+
+        <div id="errorAlert" class="alert alert-danger d-none mt-3"></div>
+
+
+        
+        <div class="d-flex justify-content-center gap-4 my-4">
+          <div class="p-3 text-center border rounded shadow-sm" style="width: 200px;">
+            <h5>Departments</h5>
+            <h3 id="deptCount" style="color: blue;">0</h3>
+          </div>
+
+          <div class="p-3 text-center border rounded shadow-sm" style="width: 200px;">
+            <h5>Courses</h5>
+            <h3 id="classCount" style="color: blue;">0</h3>
+          </div>
+
+          <div class="p-3 text-center border rounded shadow-sm" style="width: 200px;">
+            <h5>Teachers</h5>
+            <h3 id="teacherCount" style="color: blue;">0</h3>
+          </div>
+        </div>
+        <!-- 🔥 COUNT BOXES END -->
+
+
+        <!-- Generate Button Centered -->
+        <div style="margin: 20px 0; text-align:center;">
+          <button class="btn btn-success" id="generateBtn">Generate Timetable</button>
+        </div>
+
+        <!-- Export Buttons -->
+        <div class="second" id="exportOptions">
+          <div class="con1">
+            <img src="pdf.jpg" alt="PDF" />
+            <h3>PDF File</h3>
+            <button onclick="downloadFile('pdf')">Download</button>
+          </div>
+          <div class="con1">
+            <img src="do1.jpg" alt="DOCX" />
+            <h3>Docx File</h3>
+            <button onclick="downloadFile('docx')">Download</button>
+          </div>
+          <div class="con1">
+            <img src="ex2.jpg" alt="Excel" />
+            <h3>Excel File</h3>
+            <button onclick="downloadFile('excel')">Download</button>
+          </div>
+          <div class="con1">
+            <img src="t1.jpg" alt="JPG" />
+            <h3>JPG File</h3>
+            <button onclick="downloadFile('jpg')">Download</button>
+          </div>
+        </div>
+
+        <div id="loader" style="display:none; font-weight:bold; color: #3b82f6; padding:10px;">
+          ⏳ Generating timetable… please wait
+        </div>
+
+        <div id="previewContainer"></div>
+
+      </div>
+
+      <div class="footer">Time Table Generator || By SVVV Students 2025</div>
+    </div>
+      <script>
+      const API_BASE = "http://localhost:8080/api/";
+      const alertBox = document.getElementById("errorAlert");
+      const loader = document.getElementById("loader");
+      const exportOptions = document.getElementById("exportOptions");
+
+      function showError(msg) {
+        alertBox.textContent = msg;
+        alertBox.classList.remove("d-none");
+        setTimeout(() => alertBox.classList.add("d-none"), 4000);
+      }
+
+      let GLOBAL_INSTITUTE = "";
+
+      async function loadUser() {
+        const token = localStorage.getItem("token");
+        if (!token) { logout(); return; }
+        try {
+          const res = await fetch(`${API_BASE}user/profile`, {
+            headers: { Authorization: "Bearer " + token },
+          });
+          if (!res.ok) throw new Error("Unable to load profile");
+          const user = await res.json();
+          GLOBAL_INSTITUTE = user.instituteName || user.institute || "";
+          document.getElementById("usernameDisplay").textContent =
+            user.username || user.email || user.name || "User";
+        } catch (e) {
+          showError("Unable to load user details.");
+        }
+      }
+
+      function logout() {
+        localStorage.removeItem("token");
+        window.location.href = "login1.html";
+      }
+
+      document.getElementById("menuToggle").onclick = () => {
+        document.getElementById("sidebar").classList.toggle("active");
+      };
+
+      loadUser();
+
+
+      /* ----------------------------------------------------
+           LOAD COUNTS (DEPT / COURSES / TEACHERS)
+      ---------------------------------------------------- */
+      async function loadCounts() {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        try {
+          // Departments Count
+          const depRes = await fetch(`${API_BASE}user/departments`, {
+            headers: { Authorization: "Bearer " + token }
+          });
+          const depData = await depRes.json();
+          document.getElementById("deptCount").textContent = depData.length || 0;
+
+          // Courses Count
+          const classRes = await fetch(`${API_BASE}user/course`, {
+            headers: { Authorization: "Bearer " + token }
+          });
+          const classData = await classRes.json();
+          document.getElementById("classCount").textContent = classData.length || 0;
+
+          // Teachers Count
+          const teachRes = await fetch(`${API_BASE}user/teacher`, {
+            headers: { Authorization: "Bearer " + token }
+          });
+          const teachData = await teachRes.json();
+          document.getElementById("teacherCount").textContent = teachData.length || 0;
+
+        } catch (e) {
+          console.error("Count Load Failed:", e);
+        }
+      }
+
+      loadCounts();
+
+
+      function parseTimeToMinutes(t) {
+        if (!t) return 0;
+        try {
+          const parts = t.toString().trim().split(":");
+          let h = parseInt(parts[0].replace(/\D/g, ""), 10) || 0;
+          let m = parseInt(parts[1].replace(/\D/g, ""), 10) || 0;
+          return h * 60 + m;
+        } catch { return 0; }
+      }
+
+      const DAYS = ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
+
+
+      document.getElementById("generateBtn").addEventListener("click", async () => {
+        const token = localStorage.getItem("token");
+        if (!token) { showError("Not authenticated."); return; }
+
+        loader.style.display = "block";
+        exportOptions.style.display = "none";
+        document.getElementById("previewContainer").style.display = "none";
+        document.getElementById("previewContainer").innerHTML = "";
+
+        try {
+          const res = await fetch(`${API_BASE}user/schedule/generate`, {
+            method: "POST",
+            headers: { Authorization: "Bearer " + token },
+          });
+
+          if (!res.ok) {
+            const t = await res.text().catch(() => null);
+            throw new Error(t || "Failed to generate timetable.");
+          }
+
+          const data = await res.json();
+          loader.style.display = "none";
+          exportOptions.style.display = "flex";
+          renderPreview(data.schedules || []);
+        } catch (err) {
+          loader.style.display = "none";
+          showError(err.message || "Error generating timetable.");
+        }
+      });
+
+
+
+      function renderPreview(schedules) {
+        const preview = document.getElementById("previewContainer");
+        preview.style.display = "block";
+        preview.innerHTML = "";
+
+        if (!Array.isArray(schedules) || schedules.length === 0) {
+          showError("No schedules returned.");
+          return;
+        }
+
+        const grouped = {};
+        schedules.forEach(s => {
+          const key = `${s.courseName || ''}_SEM${s.semester || ''}_${s.section || 'A'}`;
+          if (!grouped[key]) grouped[key] = [];
+          grouped[key].push(s);
+        });
+
+        Object.keys(grouped).forEach(key => {
+          const list = grouped[key];
+          const ref = list[0];
+
+          preview.innerHTML += `
+            <div class="section-header">
+              <div><b>${GLOBAL_INSTITUTE}</b></div>
+              <div>Department: ${ref.departmentName || ""}</div>
+              <div>Course: ${ref.courseName || ""} (Semester ${ref.semester || ""})</div>
+              <div>Section: ${ref.section || "A"}</div>
+              <div>Branch: ${ref.branch || ""}</div>
+            </div>
+          `;
+
+          const slotSet = new Map();
+          list.forEach(s => {
+            if (!s.startTime || !s.endTime) return;
+            slotSet.set(`${s.startTime.trim()} - ${s.endTime.trim()}`, true);
+          });
+
+          const sortedSlots = Array.from(slotSet.keys())
+            .sort((a, b) => parseTimeToMinutes(a.split("-")[0]) - parseTimeToMinutes(b.split("-")[0]));
+
+          const lookup = {};
+          list.forEach(s => {
+            const day = s.dayOfWeek.trim().toUpperCase();
+            const sk = `${s.startTime.trim()} - ${s.endTime.trim()}`;
+            if (!lookup[day]) lookup[day] = {};
+            lookup[day][sk] = s;
+          });
+
+          let tableHtml = `<table><thead><tr><th>TIME / DAY</th>`;
+          DAYS.forEach(d => (tableHtml += `<th>${d}</th>`));
+          tableHtml += `</tr></thead><tbody>`;
+
+          sortedSlots.forEach(slot => {
+            tableHtml += `<tr><td>${slot}</td>`;
+            DAYS.forEach(d => {
+              const cell = lookup[d] ? lookup[d][slot] : null;
+              const content = cell
+                ? `${cell.subjectName || ''}\n(${cell.teacherName || ''})\n${cell.roomNumber || ''}\nBranch: ${cell.branch || ''}`
+                : "";
+              tableHtml += `<td>${content}</td>`;
+            });
+            tableHtml += `</tr>`;
+          });
+
+          tableHtml += `</tbody></table>`;
+          preview.innerHTML += tableHtml;
+
+          appendSubjectSummary(preview, list);
+        });
+
+        preview.scrollIntoView({ behavior: "smooth" });
+      }
+
+
+      function appendSubjectSummary(previewEl, list) {
+        const uniq = {};
+        list.forEach(s => { if (!uniq[s.subjectName]) uniq[s.subjectName] = s; });
+
+        let html = `
+          <h5 class="mt-3">Subject Summary</h5>
+          <table>
+            <thead>
+              <tr>
+                <th>Subject Name</th>
+                <th>Credits</th>
+                <th>Teacher</th>
+                <th>Branch</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        Object.values(uniq).forEach(s => {
+          html += `
+            <tr>
+              <td>${s.subjectName}</td>
+              <td>${s.credit || "-"}</td>
+              <td>${s.teacherName || ""}</td>
+              <td>${s.branch || ""}</td>
+            </tr>
+          `;
+        });
+
+        html += "</tbody></table>";
+        previewEl.innerHTML += html;
+      }
+
+
+      async function downloadFile(type) {
+        const token = localStorage.getItem("token");
+        if (!token) return showError("Not authenticated.");
+
+        try {
+          if (type === "jpg") {
+            const el = document.getElementById("previewContainer");
+            const canvas = await html2canvas(el, { scale: 2 });
+            const a = document.createElement("a");
+            a.download = "timetable.jpg";
+            a.href = canvas.toDataURL("image/jpeg");
+            a.click();
+            return;
+          }
+
+          if (type === "pdf") {
+            const res = await fetch(`${API_BASE}user/schedule/export/pdf`, {
+              headers: { Authorization: "Bearer " + token }
+            });
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "timetable.pdf";
+            a.click();
+            return;
+          }
+
+          showError("DOCX and Excel export not available yet.");
+        } catch (err) {
+          showError("Download error.");
+        }
+      }
+    </script>
+  </body>
+</html>
+  

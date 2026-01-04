@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Teachers Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Reset + base */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+       h4 {
+        margin-top: 10px;
+        margin-left: 50px;
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+      }
+      
+      body {
+        background: #eef3f8;
+        min-height: 100vh;
+        overflow-x: hidden;
+        display: flex;
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        width: 260px;
+        background: #1f2937;
+        color: #fff;
+        display: flex;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        padding: 20px 0;
+        transition: transform 0.3s ease;
+        flex-direction: column;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+       
+      }
+      .sidebar h3 {
+        padding: 0 20px;
+        margin-bottom: 25px;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #9ca3af;
+        
+      }
+      .sidebar a {
+        display: flex;
+        color: #d1d5db;
+        text-decoration: none;
+        padding: 12px 25px;
+        margin: 2px 10px;
+        border-radius: 8px;
+        transition: 0.3s;
+      }
+      .sidebar a:hover {
+        background: #3b82f6;
+        color: #fff;
+        font-weight: bold;
+      }
+
+      /* hide sidebar on mobile initially */
+      @media (max-width: 992px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+      }
+
+      /* MAIN */
+      .main-wrapper {
+        margin-left: 260px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        transition: margin-left 0.3s ease;
+      }
+      @media (max-width: 992px) {
+        .main-wrapper {
+          margin-left: 0;
+        }
+        .main-wrapper.shift {
+          margin-left: 260px;
+        }
+      }
+
+      /* NAVBAR */
+      .topbar {
+        height: 65px;
+        background: #fff;
+        border-bottom: 1px solid #e6e9ee;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 25px;
+        /* position: sticky;
+        top: 0;
+        z-index: 1100; */
+        border-radius: 0 0 15px 15px;
+
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+      }
+
+      .menu-toggle {
+        font-size: 26px;
+        cursor: pointer;
+        display: none;
+        user-select: none;
+      }
+        
+
+      .search-wrap input {
+       width: 300px;
+        padding: 8px 15px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+         transition: 0.3s;
+      }
+
+      @media (max-width: 992px) {
+        .menu-toggle {
+          display: block;
+          margin-right: 10px;
+        }
+        .search-wrap {
+          display: none;
+        }
+      }
+
+      /* PROFILE area */
+      .profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+      }
+      .profile img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 2px solid #3b82f6;
+      }
+      .auth-username {
+        font-weight: 600;
+        color: #1f2937;
+      }
+      .logout-desktop {
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+        padding: 5px 10px ;
+        border-radius: 5px;
+        border: none;
+        background-color:  #ef4444;
+
+      }
+      .logout-desktop:hover{
+        background-color: #dc2626;
+      }
+
+
+      /* hide desktop logout on small screens */
+      @media (max-width: 992px) {
+        .logout-desktop {
+          display: none;
+        }
+      }
+
+      /* mobile dropdown (only for <=992) */
+      .logout-dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 46px;
+        background: #fff;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid #e6e9ee;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        color: #dc2626;
+        font-weight: 700;
+        cursor: pointer;
+        z-index: 1300;
+      }
+      @media (max-width: 992px) {
+        .logout-dropdown.show {
+          display: block;
+        }
+      }
+
+      /* CONTENT area (centered and responsive) */
+      .page-content {
+        /* flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+        padding: 18px 12px 24px; */
+ background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+        margin: 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+      }
+
+      .content-box {
+        width: 100%;
+        max-width: 980px; /* desktop content width */
+        background: #fff;
+        border-radius: 10px;
+        padding: 18px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ensure content box takes only needed vertical space */
+      .content-box .form-row {
+        margin-bottom: 12px;
+      }
+
+      /* TABLE container: only this scrolls horizontally or vertically */
+      .table-container {
+    
+        max-height: 200px;
+         /* horizontal scroll inside box */
+        overflow-y: auto; /* vertical scroll inside box if rows large */
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #fff;
+        margin-top: 12px;
+      }
+
+
+      /* give table a min-width so it can scroll inside box on small screens */
+      .table-responsive-table {
+        min-width: 720px; /* adjust based on number of columns */
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      /* make the action buttons compact on small screens */
+      .btn-sm {
+        padding: 0.28rem 0.5rem;
+        font-size: 0.78rem;
+      }
+
+      /* footer stick */
+      .page-footer {
+        height: 55px;
+         background: #1f2937;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: #9ca3af;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+        flex-shrink: 0;
+        overflow: hidden;
+       
+        transition: left 0.3s;
+        
+      }
+
+    
+     
+    </style>
+  </head>
+
+
+
+  <body>
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <h3>Menu</h3>
+      <a href="home.html">🏠 Home</a>
+      <a href="schedules.html">📅 Schedules</a>
+      <a href="departments.html">🏢 Departments</a>
+      <a href="classes.html" >🎓 Classes</a>
+      <a href="subject.html">📘 Subject</a>
+      <a href="section.html">🔖 section</a>
+      <a href="teachers.html">👨‍🏫 Teachers</a>
+      <a href="tsmapping.html">🔗 Teacher Subject Mapping</a>
+      <a href="Room.html">🏫 Rooms</a>
+      <a href="timeslot.html">⏱ Time Slot</a>
+    </nav>
+
+    <!-- MAIN -->
+    <div class="main-wrapper" id="mainWrapper">
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <!-- <div>
+          <span class="menu-toggle" id="menuToggle">☰</span>
+          
+        </div> -->
+        <span class="menu-toggle" id="menuToggle">☰</span>
+
+        <div class="search-wrap">
+          <input id="searchBox" placeholder="Search teachers..." />
+        </div>
+
+        <div class="profile" id="profileArea">
+          <img src="sc1.png" alt="user" />
+          <span class="auth-username" id="usernameDisplay">Loading...</span>
+          <span class="logout-desktop" id="logoutDesktop">Logout</span>
+          <div class="logout-dropdown" id="logoutDropdown">Logout</div>
+        </div>
+      </header>
+        <h4>Teacher</h4>
+      <!-- PAGE CONTENT -->
+      <main class="page-content">
+        <!-- <section
+          class="content-box"
+          role="region"
+          aria-label="Teachers form and list"
+        > -->
+          <h5 >Information about Teachers</h5>
+
+          <form id="teacherForm" style="margin-bottom: 12px">
+            <div class="row form-row g-2">
+              <div class="col-md-4">
+                <label class="form-label">Department</label>
+                <select id="departmentSelect" class="form-control" required>
+                  <option value="">Select Department</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Teacher</label>
+                <input
+                  id="teacherName"
+                  class="form-control"
+                  placeholder="Full name"
+                  required
+                />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Email</label>
+                <input
+                  id="teacherEmail"
+                  class="form-control"
+                  type="email"
+                  placeholder="email@example.com"
+                  required
+                />
+              </div>
+            </div>
+          <br>
+            <div style="text-align: center; margin-top: 12px">
+              <button type="submit" class="btn btn-primary btn-sm">
+                Confirm
+              </button>
+            </div>
+          </form>
+
+          <!-- results list -->
+          <div id="resultsBlock" style="display: none">
+            <h6 style="margin-bottom: 8px">Teachers List</h6>
+
+            <div class="table-container">
+              <table class="table-responsive-table" id="teachersTable">
+                <thead style="background: #0f1724; color: #fff">
+                  <tr>
+                    <th style="padding: 10px 12px; text-align: left">
+                      Department
+                    </th>
+                    <th style="padding: 10px 12px; text-align: left">Name</th>
+                    <th style="padding: 10px 12px; text-align: left">Email</th>
+                    <th style="padding: 10px 12px; text-align: center">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+<!-- 
+        <div class="page-footer">
+          Time table Generator || By SVVV Students 2025
+        </div> -->
+      </main>
+      
+        <div class="page-footer">
+          Time table Generator || By SVVV Students 2025
+        </div>
+    </div>
+
+    <script>
+      /* ------------------ Basic auth check ------------------ */
+      const token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "login1.html";
+      }
+
+      /* Elements */
+      const sidebar = document.getElementById("sidebar");
+      const mainWrapper = document.getElementById("mainWrapper");
+      const menuToggle = document.getElementById("menuToggle");
+      const usernameDisplay = document.getElementById("usernameDisplay");
+      const logoutDesktop = document.getElementById("logoutDesktop");
+      const logoutDropdown = document.getElementById("logoutDropdown");
+      const profileArea = document.getElementById("profileArea");
+      const searchBox = document.getElementById("searchBox");
+
+      const deptSelect = document.getElementById("departmentSelect");
+      const teacherForm = document.getElementById("teacherForm");
+      const teacherName = document.getElementById("teacherName");
+      const teacherEmail = document.getElementById("teacherEmail");
+      const resultsBlock = document.getElementById("resultsBlock");
+      const tableBody = document.getElementById("tableBody");
+
+      let editId = null;
+
+      /* ------------------ Sidebar toggle (mobile behavior) ------------------ */
+      menuToggle.addEventListener("click", () => {
+        const isMobile = window.innerWidth <= 992;
+        sidebar.classList.toggle("active");
+        mainWrapper.classList.toggle("shift");
+
+        // move toggle visually only on mobile for clarity
+        if (isMobile) {
+          menuToggle.style.transform = sidebar.classList.contains("active")
+            ? "translateX(220px)"
+            : "translateX(0)";
+        }
+        menuToggle.textContent = sidebar.classList.contains("active")
+          ? "✖"
+          : "☰";
+      });
+
+      /* close sidebar when clicking outside on mobile */
+      document.addEventListener("click", (e) => {
+        if (window.innerWidth <= 992) {
+          if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+            if (sidebar.classList.contains("active")) {
+              sidebar.classList.remove("active");
+              mainWrapper.classList.remove("shift");
+              menuToggle.style.transform = "translateX(0)";
+              menuToggle.textContent = "☰";
+            }
+          }
+        }
+      });
+
+      /* ------------------ Profile / logout behavior ------------------ */
+      logoutDesktop.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        location.href = "login1.html";
+      });
+
+      profileArea.addEventListener("click", (ev) => {
+        if (window.innerWidth <= 992) {
+          logoutDropdown.classList.toggle("show");
+        }
+      });
+
+      document.addEventListener("click", (ev) => {
+        if (window.innerWidth <= 992) {
+          if (!profileArea.contains(ev.target)) {
+            logoutDropdown.classList.remove("show");
+          }
+        }
+      });
+
+      logoutDropdown.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        location.href = "login1.html";
+      });
+
+      /* ------------------ API endpoints ------------------ */
+      const API_BASE = "http://localhost:8080/api/user/teacher";
+      const DEPT_URL = "http://localhost:8080/api/user/departments/names";
+
+      /* fetch profile */
+      async function loadProfile() {
+        try {
+          const res = await fetch("http://localhost:8080/api/user/profile", {
+            headers: { Authorization: "Bearer " + token },
+          });
+          if (!res.ok) throw new Error("Unauthorized");
+          const user = await res.json();
+          usernameDisplay.textContent = user.username || user.email || "User";
+        } catch (err) {
+          localStorage.removeItem("token");
+          location.href = "login1.html";
+        }
+      }
+
+      /* load departments */
+      async function loadDepartments() {
+        try {
+          const res = await fetch(DEPT_URL, {
+            headers: { Authorization: "Bearer " + token },
+          });
+          const list = await res.json();
+          deptSelect.innerHTML = '<option value="">Select Department</option>';
+          list.forEach((name) => {
+            const o = document.createElement("option");
+            o.value = name;
+            o.textContent = name;
+            deptSelect.appendChild(o);
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      /* load teachers */
+      async function loadTeachers(query = "") {
+        try {
+          let url = API_BASE;
+          if (query) url += "/search/" + encodeURIComponent(query);
+
+          const res = await fetch(url, {
+            headers: { Authorization: "Bearer " + token },
+          });
+          const data = await res.json();
+
+          tableBody.innerHTML = "";
+          data.forEach((t) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+        <td style="padding:10px 12px">${t.departmentName || "-"}</td>
+        <td style="padding:10px 12px">${t.teacherName || "-"}</td>
+        <td style="padding:10px 12px">${t.teacherEmail || "-"}</td>
+        <td style="padding:10px 12px;text-align:center">
+          <button class="btn btn-sm btn-warning" onclick="window.editTeacher(${
+            t.teacherId
+          })">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="window.deleteTeacher(${
+            t.teacherId
+          })">Delete</button>
+        </td>
+      `;
+            tableBody.appendChild(tr);
+          });
+
+          resultsBlock.style.display = data.length ? "block" : "none";
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      /* submit form (create or update) */
+      teacherForm.addEventListener("submit", async (ev) => {
+        ev.preventDefault();
+        const payload = {
+          departmentName: deptSelect.value,
+          teacherName: teacherName.value.trim(),
+          teacherEmail: teacherEmail.value.trim(),
+        };
+
+        if (
+          !payload.departmentName ||
+          !payload.teacherName ||
+          !payload.teacherEmail
+        ) {
+          alert("Please fill all fields");
+          return;
+        }
+
+        try {
+          if (editId) {
+            await fetch(API_BASE + "/update/" + editId, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+              },
+              body: JSON.stringify(payload),
+            });
+            alert("Updated successfully");
+            editId = null;
+          } else {
+            await fetch(API_BASE + "/save", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+              },
+              body: JSON.stringify(payload),
+            });
+            alert("Saved successfully");
+          }
+          teacherForm.reset();
+          loadTeachers();
+        } catch (err) {
+          console.error(err);
+          alert("Operation failed");
+        }
+      });
+
+      /* expose edit/delete to global so button onclick works */
+      window.editTeacher = async (id) => {
+        try {
+          const res = await fetch(API_BASE + "/" + id, {
+            headers: { Authorization: "Bearer " + token },
+          });
+          const t = await res.json();
+          editId = t.teacherId;
+          deptSelect.value = t.departmentName || "";
+          teacherName.value = t.teacherName || "";
+          teacherEmail.value = t.teacherEmail || "";
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      window.deleteTeacher = async (id) => {
+        if (!confirm("Are you sure to delete?")) return;
+        try {
+          await fetch(API_BASE + "/" + id, {
+            method: "DELETE",
+            headers: { Authorization: "Bearer " + token },
+          });
+          alert("Deleted successfully");
+          loadTeachers();
+        } catch (err) {
+          console.error(err);
+          alert("Delete failed");
+        }
+      };
+
+      /* search */
+      searchBox.addEventListener("input", (e) =>
+        loadTeachers(e.target.value || "")
+      );
+
+      /* initial load */
+      loadProfile();
+      loadDepartments();
+      loadTeachers();
+
+      /* adjust behavior on resize: ensure menuToggle transform reset if desktop */
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 992) {
+          sidebar.classList.remove("active");
+          menuToggle.style.transform = "translateX(0)";
+          menuToggle.textContent = "☰";
+          mainWrapper.classList.remove("shift");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sections Dashboard</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+      }
+      body {
+        display: flex;
+        min-height: 100vh;
+        background: #f0f4f8;
+        overflow-x: hidden;
+      }
+
+      .sidebar {
+        width: 260px;
+        background: #1f2937;
+        color: #fff;
+        padding: 20px 0;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1000;
+        transition: transform 0.3s ease;
+      }
+      .sidebar h3 {
+        padding: 0 25px;
+        margin-bottom: 20px;
+        font-size: 15px;
+        color: #9ca3af;
+        text-transform: uppercase;
+      }
+      .sidebar a {
+        text-decoration: none;
+        color: #d1d5db;
+        padding: 12px 25px;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        margin: 3px 10px;
+      }
+      .sidebar a:hover {
+        background: #3b82f6;
+        color: white;
+        font-weight: bold;
+      }
+
+      .main-content {
+        flex: 1;
+        margin-left: 260px;
+        display: flex;
+        flex-direction: column;
+        background: #f9fafb;
+        min-height: 100vh;
+        transition: margin-left 0.3s;
+      }
+/* NAVBAR FIX */
+.navbar {
+  height: 65px;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+/* RIGHT SIDE PROFILE WRAPPER */
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  margin-left: auto;      /* 👈 pushes username & logout to the right */
+}
+
+/* PROFILE IMAGE SAME */
+.profile img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid #3b82f6;
+}
+
+/* LOGOUT BUTTON (right of username) */
+.logout-btn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout-btn:hover {
+  background-color: #dc2626;
+}
+
+
+
+      .menu-toggle {
+        display: none;
+        font-size: 26px;
+        cursor: pointer;
+        color: #1f2937;
+      }
+
+
+      .content {
+        background: #fff;
+        padding: 25px;
+        margin: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+
+      .table-container {
+        overflow-x: auto;
+        max-height: 350px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+
+      .footer {
+        height: 55px;
+        background: #1f2937;
+        color: #9ca3af;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom: 0;
+        left: 260px;
+        right: 0;
+      }
+
+      @media (max-width: 991px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+        .menu-toggle {
+          display: block;
+        }
+        .main-content {
+          margin-left: 0;
+        }
+        .footer {
+          left: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <h3>Menu</h3>
+      <a href="home.html">🏠 Home</a>
+      <a href="schedules.html">📅 Schedules</a>
+      <a href="departments.html">🏢 Departments</a>
+      <a href="classes.html" >🎓 Classes</a>
+      <a href="subject.html">📘 Subject</a>
+      <a href="section.html">🔖 section</a>
+      <a href="teachers.html">👨‍🏫 Teachers</a>
+      <a href="tsmapping.html">🔗 Teacher Subject Mapping</a>
+      <a href="Room.html">🏫 Rooms</a>
+      <a href="timeslot.html">⏱ Time Slot</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="navbar">
+        <span class="menu-toggle" id="menuToggle"></span>
+
+        <div class="profile" id="profileDropdown">
+  <img src="sc1.png" />
+  <span class="auth-username">Loading...</span>
+
+  <!-- ADD THIS -->
+  <button class="logout-btn" onclick="logout()">Logout</button>
+
+</div>
+
+      </div>
+
+      <h4 style="margin-left: 30px; margin-top: 10px">Sections</h4>
+
+      <div class="content">
+        <h5 class="mb-4">Manage Semesters & Sections</h5>
+
+        <form id="section-form">
+          <div class="row mb-3">
+
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Course *</label>
+              <select class="form-control" id="course-select" required>
+                <option value="">Select Course</option>
+              </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Semester *</label>
+              <select class="form-control" id="semester-select" required>
+                <option value="">Select Semester</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+              </select>
+            </div>
+
+            <!-- BRANCH (TEXT INPUT) -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Branch *</label>
+              <input type="text" class="form-control" id="branch-input" placeholder="Enter Branch e.g. CSE" required />
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Section *</label>
+              <select class="form-control" id="section-name-select" required>
+                <option value="">Select Section</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="text-center mb-4">
+            <button type="submit" class="btn btn-primary">Save Section</button>
+          </div>
+        </form>
+
+        <div id="user-data" style="display: none">
+          <h6>Sections List:</h6>
+
+          <div class="table-container mt-2">
+            <table class="table table-bordered table-striped mb-0">
+              <thead class="table-dark">
+                <tr>
+                  <th>Course</th>
+                  <th>Semester</th>
+                  <th>Branch</th>
+                  <th>Section</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="data-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">Timetable Generator | SVVV Students 2025</div>
+    </div>
+
+    <!-- JS -->
+    <script>
+      const token = localStorage.getItem("token");
+      if (!token) location.href = "login1.html";
+      
+      function logout() {
+    	  localStorage.removeItem("token");
+    	  window.location.href = "login1.html";
+    	}
+
+
+      async function loadProfile() {
+        const res = await fetch("http://localhost:8080/api/user/profile", {
+          headers: { Authorization: "Bearer " + token },
+        });
+        const user = await res.json();
+        document.querySelector(".auth-username").textContent = user.username;
+      }
+
+      async function loadCourseNames() {
+        const res = await fetch("http://localhost:8080/api/user/course", {
+          headers: { Authorization: "Bearer " + token }
+        });
+        const list = await res.json();
+
+        const select = document.getElementById("course-select");
+        list.forEach(c => {
+          select.innerHTML += `<option value="${c.courseId}">${c.courseName}</option>`;
+        });
+      }
+
+      async function loadSections() {
+        const res = await fetch("http://localhost:8080/api/user/section", {
+          headers: { Authorization: "Bearer " + token }
+        });
+        const data = await res.json();
+
+        const body = document.getElementById("data-body");
+        body.innerHTML = "";
+
+        data.forEach(s => {
+          body.innerHTML += `
+            <tr>
+              <td>${s.courseName}</td>
+              <td>${s.semester}</td>
+              <td>${s.branch}</td>
+              <td>${s.sectionName}</td>
+              <td>
+                <button class="btn btn-sm" onclick="editSection(${s.sectionId})">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteSection(${s.sectionId})">Delete</button>
+              </td>
+            </tr>
+          `;
+        });
+
+        document.getElementById("user-data").style.display = "block";
+      }
+
+      let editId = null;
+
+      async function editSection(id) {
+        const res = await fetch("http://localhost:8080/api/user/section/" + id, {
+          headers: { Authorization: "Bearer " + token }
+        });
+        const s = await res.json();
+
+        document.getElementById("course-select").value = s.courseId;
+        document.getElementById("semester-select").value = s.semester;
+        document.getElementById("branch-input").value = s.branch;
+        document.getElementById("section-name-select").value = s.sectionName;
+
+        editId = id;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      async function deleteSection(id) {
+        if (!confirm("Delete this section?")) return;
+
+        await fetch("http://localhost:8080/api/user/section/" + id, {
+          method: "DELETE",
+          headers: { Authorization: "Bearer " + token }
+        });
+        loadSections();
+      }
+
+      document.getElementById("section-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const payload = {
+          courseId: Number(document.getElementById("course-select").value),
+          semester: Number(document.getElementById("semester-select").value),
+          branch: document.getElementById("branch-input").value,
+          sectionName: document.getElementById("section-name-select").value
+        };
+
+        const url = editId
+          ? "http://localhost:8080/api/user/section/update/" + editId
+          : "http://localhost:8080/api/user/section/save";
+
+        await fetch(url, {
+          method: editId ? "PUT" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+          },
+          body: JSON.stringify(payload)
+        });
+
+        editId = null;
+        e.target.reset();
+        loadSections();
+      });
+
+      (async function() {
+        await loadProfile();
+        await loadCourseNames();
+        await loadSections();
+      })();
+    </script>
+  </body>
+</html>

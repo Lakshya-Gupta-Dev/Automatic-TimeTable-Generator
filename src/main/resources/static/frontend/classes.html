@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Classes Dashboard</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+      }
+      body {
+        display: flex;
+        min-height: 100vh;
+        background: #f0f4f8;
+        overflow-x: hidden;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 259px;
+        background: #1f2937;
+        color: #fff;
+        padding: 20px 0;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+         box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1000;
+        transition: transform 0.3s ease;
+      }
+      .sidebar h3 {
+        padding: 0 25px;
+        margin-bottom: 25px;
+        font-size: 16px;
+        color: #9ca3af;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .sidebar a {
+        text-decoration: none;
+        color: #d1d5db;
+        padding: 12px 25px;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        margin: 2px 10px;
+      }
+      .sidebar a:hover {
+        background: #3b82f6;
+        color: white;
+        font-weight: bold;
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        margin-left: 260px;
+        display: flex;
+        flex-direction: column;
+        background: #f9fafb;
+        min-height: 100vh;
+        transition: margin-left 0.3s;
+      }
+
+      /* Navbar */
+      .navbar {
+        height: 65px;
+        background: #fff;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 25px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+         border-radius: 0 0 15px 15px;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+      }
+
+      /* Menu Toggle */
+      .menu-toggle {
+        display: none;
+        font-size: 26px;
+        cursor: pointer;
+        color: #1f2937;
+        position: relative;
+        z-index: 2001;
+        transition: transform 0.3s ease;
+      }
+        .navbar .search-box input {
+        width: 300px;
+        padding: 8px 15px;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        transition: 0.3s;
+      }
+      .navbar .search-box input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+      }
+      /* Navbar Profile */
+      .navbar .profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        position: relative;
+      }
+      .navbar .profile img {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 2px solid #3b82f6;
+      }
+      .navbar .profile span {
+        font-weight: 500;
+        color: #1f2937;
+      }
+
+      /* Logout Dropdown */
+      /* .logout-dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 50px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        z-index: 2002;
+      } */
+      .logout-dropdown button {
+       background-color: #ef4444;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+
+        font-size: 14px;
+      }
+      .logout-dropdown button:hover {
+        background-color: #dc2626;
+      }
+
+      /* Content Box */
+      .content {
+        background: #fff;
+        padding: 25px;
+        margin: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+
+      /* Table Container */
+      .table-container {
+        overflow-x: auto;
+        max-height: 350px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+
+      /* Footer */
+      .footer {
+        height: 55px;
+        background: #1f2937;
+        color: #9ca3af;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom: 0;
+        left: 260px;
+        right: 0;
+        transition: left 0.3s;
+      }
+       h4 {
+        margin-top: 10px;
+        margin-left: 50px;
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+      }
+
+      /* Responsive */
+      @media (max-width: 991px) {
+        body {
+          flex-direction: column;
+        }
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+        .menu-toggle {
+          display: block;
+        }
+        .search-box {
+          display: none;
+        }
+        .main-content {
+          margin-left: 0;
+        }
+        .footer {
+          left: 0;
+        }
+        .table-container {
+          max-height: 350px;
+        }
+        .content {
+          margin: 15px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <h3>Menu</h3>
+      <a href="home.html">🏠 Home</a>
+      <a href="schedules.html">📅 Schedules</a>
+      <a href="departments.html">🏢 Departments</a>
+      <a href="classes.html" >🎓 Classes</a>
+      <a href="subject.html">📘 Subject</a>
+      <a href="section.html">🔖 section</a>
+      <a href="teachers.html">👨‍🏫 Teachers</a>
+      <a href="tsmapping.html">🔗 Teacher Subject Mapping</a>
+      <a href="Room.html">🏫 Rooms</a>
+      <a href="timeslot.html">⏱ Time Slot</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Navbar -->
+      <div class="navbar">
+        <span class="menu-toggle" id="menuToggle">☰</span>
+
+        <div class="search-box">
+          <input
+            type="text"
+            id="search-box"
+            placeholder="Search courses..."
+            class="form-control"
+          />
+        </div>
+        
+
+        <div class="profile" id="profileDropdown">
+          <img src="sc1.png" />
+          <span class="auth-username">Loading...</span>
+
+          <div class="logout-dropdown" id="logoutDropdown">
+            <button onclick="logout()">Logout</button>
+          </div>
+        </div>
+      </div>
+
+      <h4 >Classes</h4>
+
+      <div class="content">
+        <h5 class="mb-4">Information about the Classes</h5>
+
+        <form id="course-form">
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Department *</label>
+              <select class="form-control" id="department-select" required>
+                <option value="">Select Department</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Course *</label>
+              <input
+                type="text"
+                class="form-control"
+                id="course-name"
+                placeholder="Course name..."
+                required
+              />
+            </div>
+          </div>
+
+          <div class="text-center mb-4">
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+
+        <div id="user-data" style="display: none">
+          <h6>Classes List:</h6>
+
+          <div class="table-container mt-2">
+            <table class="table table-bordered table-striped mb-0">
+              <thead class="table-dark">
+                <tr>
+                  <th>Department</th>
+                  <th>Course</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="data-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">Time table Generator || By SVVV Students 2025</div>
+    </div>
+
+    <!-- JS -->
+    <script>
+      const token = localStorage.getItem("token");
+      if (!token) location.href = "login1.html";
+
+      const sidebar = document.getElementById("sidebar");
+      const menuToggle = document.getElementById("menuToggle");
+
+      /* Sidebar Toggle + Button Shift */
+      menuToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("active");
+
+        if (sidebar.classList.contains("active")) {
+          menuToggle.style.transform = "translateX(250px)";
+        } else {
+          menuToggle.style.transform = "translateX(0)";
+        }
+
+        menuToggle.textContent = sidebar.classList.contains("active")
+          ? "✖"
+          : "☰";
+      });
+
+      /* Logout dropdown toggle */
+      const profileDropdown = document.getElementById("profileDropdown");
+      const logoutDropdown = document.getElementById("logoutDropdown");
+
+      profileDropdown.addEventListener("click", () => {
+        logoutDropdown.style.display =
+          logoutDropdown.style.display === "block" ? "none" : "block";
+      });
+
+      function logout() {
+        localStorage.removeItem("token");
+        location.href = "login1.html";
+      }
+
+      /* Load Profile */
+      async function loadProfile() {
+        const res = await fetch("http://localhost:8080/api/user/profile", {
+          headers: { Authorization: "Bearer " + token },
+        });
+        if (res.ok) {
+          const user = await res.json();
+          document.querySelector(".auth-username").textContent = user.username;
+        }
+      }
+
+      /* API URLs */
+      const deptUrl = "http://localhost:8080/api/user/departments/names";
+      const apiUrl = "http://localhost:8080/api/user/course";
+
+      /* Load Departments */
+      async function loadDepartments() {
+        const res = await fetch(deptUrl, {
+          headers: { Authorization: "Bearer " + token },
+        });
+        const depts = await res.json();
+
+        const select = document.getElementById("department-select");
+        select.innerHTML = '<option value="">Select Department</option>';
+
+        depts.forEach((d) => {
+          select.innerHTML += `<option value="${d}">${d}</option>`;
+        });
+      }
+
+      /* Load Courses */
+      async function loadCourses(query = "") {
+        let url = apiUrl;
+        if (query) url += "/search/" + query;
+
+        const res = await fetch(url, {
+          headers: { Authorization: "Bearer " + token },
+        });
+        const data = await res.json();
+
+        const body = document.getElementById("data-body");
+        body.innerHTML = "";
+
+        data.forEach((c) => {
+          body.innerHTML += `
+          <tr>
+            <td>${c.departmentName}</td>
+            <td>${c.courseName}</td>
+            <td>
+              <button class="btn btn-sm btn-warning" onclick="editCourse(${c.courseId})">Edit</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteCourse(${c.courseId})">Delete</button>
+            </td>
+          </tr>
+        `;
+        });
+
+        document.getElementById("user-data").style.display = "block";
+      }
+
+      /* Edit Course */
+      async function editCourse(id) {
+        const res = await fetch(apiUrl + "/" + id, {
+          headers: { Authorization: "Bearer " + token },
+        });
+        const c = await res.json();
+
+        document.getElementById("department-select").value = c.departmentName;
+        document.getElementById("course-name").value = c.courseName;
+
+        editId = c.courseId;
+      }
+
+      /* Delete Course */
+      async function deleteCourse(id) {
+        if (!confirm("Delete this class?")) return;
+
+        await fetch(apiUrl + "/" + id, {
+          method: "DELETE",
+          headers: { Authorization: "Bearer " + token },
+        });
+
+        loadCourses();
+      }
+
+      /* Save Course */
+      const form = document.getElementById("course-form");
+      let editId = null;
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const courseData = {
+          departmentName: document.getElementById("department-select").value,
+          courseName: document.getElementById("course-name").value,
+          semester: 1,
+        };
+
+        if (editId) {
+          await fetch(apiUrl + "/update/" + editId, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify(courseData),
+          });
+          editId = null;
+        } else {
+          await fetch(apiUrl + "/save", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify(courseData),
+          });
+        }
+
+        form.reset();
+        loadCourses();
+      });
+
+      /* Search */
+      document.getElementById("search-box").addEventListener("input", (e) => {
+        loadCourses(e.target.value);
+      });
+
+      /* Initial Load */
+      loadProfile();
+      loadDepartments();
+      loadCourses();
+    </script>
+  </body>
+</html>

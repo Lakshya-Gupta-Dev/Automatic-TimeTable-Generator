@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{display:flex;height:100vh;background:#f9f9f9}
+.sidebar{width:250px;background:#fff;border-right:1px solid #ddd;padding:20px 0;display:flex;flex-direction:column}
+.sidebar h3{padding:0 20px;margin-bottom:20px;color:#777;font-size:14px;text-transform:uppercase}
+.sidebar a{text-decoration:none;color:#333;padding:12px 20px;display:flex;align-items:center;transition:0.3s}
+.sidebar a:hover,.sidebar a.active{background:#eaf2ff;color:#0066ff;font-weight:bold}
+.sidebar a i{margin-right:10px}
+.main-content{flex:1;display:flex;flex-direction:column}
+.navbar{height:60px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+.navbar .search-box input{width:250px;padding:8px 12px;border:1px solid #ddd;border-radius:5px}
+.navbar .profile{display:flex;align-items:center;gap:10px}
+.navbar .profile img{width:35px;height:35px;border-radius:50%;background:#ccc}
+.content{flex:1;padding:20px}
+.content h2{font-size:20px;margin-bottom:10px}
+.breadcrumb{color:#777;font-size:14px;margin-bottom:20px}
+.footer{height:50px;background:#fff;border-top:1px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:14px;color:#555}
+</style>
+</head>
+<body>
+<div class="sidebar">
+<h3>Menu</h3>
+<a href="#" class="active"><i>🏠</i> Home</a>
+<a href="#"><i>📅</i> Schedules</a>
+<a href="#"><i>🎓</i> Classes</a>
+<a href="#"><i>👨‍🏫</i> Teachers</a>
+<a href="#"><i>🏢</i> Departments</a>
+<a href="#"><i>📘</i> Majors</a>
+<a href="#"><i>🏫</i> Rooms</a>
+</div>
+<div class="main-content">
+<div class="navbar">
+<div class="search-box"><input type="text" placeholder="Search..."></div>
+<div class="profile">
+<span>🔔</span>
+<img src="" alt="User">
+<span th:text="${username}">Admin ▼</span>
+</div>
+</div>
+<div class="content">
+<h2>Timetable</h2>
+<p class="breadcrumb">Home / Timetable</p>
+<p>Welcome to your dashboard layout!</p>
+</div>
+<div class="footer">Time table Generator || By SVVV Students 2025</div>
+</div>
+</body>
+</html>

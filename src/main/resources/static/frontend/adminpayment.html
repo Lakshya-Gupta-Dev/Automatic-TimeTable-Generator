@@ -1,0 +1,253 @@
+<!--home page ---->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Layout</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      display: flex;
+       height: 100vh; 
+      background: #f0f4f8;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: #1f2937;
+      color: #fff;
+      border-right: 1px solid #ccc;
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    }
+
+    .sidebar h3 {
+      padding: 0 20px;
+      margin-bottom: 25px;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #9ca3af;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: #d1d5db;
+      padding: 12px 25px;
+      display: flex;
+      align-items: center;
+      transition: 0.3s;
+      border-radius: 8px;
+      margin: 2px 10px;
+    }
+
+    .sidebar a:hover
+     {
+      background: #3b82f6;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .sidebar a i {
+      margin-right: 12px;
+      font-size: 18px;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #f9fafb;
+      overflow: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+      height: 65px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      border-radius: 0 0 15px 15px;
+    }
+
+    .navbar .search-box input {
+      width: 300px;
+      padding: 8px 15px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+
+    .navbar .search-box input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 5px rgba(59,130,246,0.5);
+    }
+
+    .navbar .profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .navbar .profile img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 2px solid #3b82f6;
+      background: #ccc;
+    }
+
+    /* Content */
+    .content {
+
+background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+      margin: 20px;
+      flex: 1;
+      
+      flex-direction: column;
+      overflow: hidden;
+
+
+    }
+
+  h4{
+    margin-top: 10px;
+    margin-left: 50px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    
+  }
+  h1{
+
+    margin-top: 30px;
+  }
+
+
+    /* Footer */
+    .footer {
+      height: 55px;
+      background: #1f2937;
+      border-top: 1px solid #374151;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #9ca3af;
+      box-shadow: 0 -2px 4px rgba(0,0,0,1);
+      flex-shrink: 0;
+      overflow: hidden;
+
+
+    }
+   
+         table{
+          border-collapse:collapse;
+          width: 70%;
+          margin: 20px auto;
+
+         }
+
+         th,td{ border: 1px solid;
+          text-align: center;
+          padding: 1px;
+         }
+
+         th{
+          background-color: yellowgreen;
+         }
+        
+
+    /* Extra: card style example */
+   </style>
+</head>
+<body>
+  
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h3>Menu</h3>
+    <a href="adminhome.html"><i>🏠</i> Home</a>
+    <a href="adminuser.html"><i>🙎‍♂️</i> Total_user</a>
+    <a href="admintimetable.html"><i>🗓️</i> Total_timetable</a>
+   <!-- <a href="adminpayment.html"><i>💵</i> Total_payment</a>   -->
+   
+    
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    
+    <!-- Navbar -->
+    <div class="navbar">
+      <div class="search-box">
+        <input type="text" placeholder="Search...">
+      </div>
+      <div class="profile">
+    
+        <img src="sc1.png" alt="User">
+        <span>Deepraj ▼</span>
+      </div>
+    </div>
+<h4>Payment Information </h4>
+    <!-- Page Content -->
+    <div class="content">
+     <!-- Table to show data -->
+      
+     <table>
+
+      <tr>
+        <th>Institute_name</th>
+        <th>payment_mode</th>
+        <th>Total_payment</th>
+      </tr>
+
+
+      <tr>
+        <td>svvv</td>
+        <td>card</td>
+        <td>2000</td>
+      </tr>
+     </table>
+
+
+    </div>
+
+      
+
+    
+
+    
+
+
+    <!-- Footer -->
+    <div class="footer">
+       Time table Generator || By SVVV Students 2025
+    </div>
+
+  </div>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>

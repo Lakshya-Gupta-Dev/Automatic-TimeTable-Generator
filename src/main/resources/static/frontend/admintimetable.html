@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin – Total Timetables</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* GLOBAL */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI";
+      }
+      body {
+        display: flex;
+        height: 100vh;
+        background: #f0f4f8;
+        overflow: hidden;
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        width: 260px;
+        background: #1f2937;
+        color: #fff;
+        padding: 20px 0;
+        transition: all 0.4s ease;
+      }
+      .sidebar h3 {
+        padding-left: 20px;
+        color: #9ca3af;
+        margin-bottom: 20px;
+      }
+      .sidebar a {
+        text-decoration: none;
+        color: #d1d5db;
+        padding: 12px 25px;
+        display: flex;
+        border-radius: 8px;
+        margin: 3px 10px;
+        transition: 0.3s;
+      }
+      .sidebar a:hover {
+        background: #3b82f6;
+        color: #fff;
+      }
+
+      /* TOGGLE */
+      #toggleBtn {
+        position: absolute;
+        left: 20px;
+        top: 15px;
+        font-size: 26px;
+        cursor: pointer;
+        display: none;
+        background: #1f2937;
+        color: white;
+        padding: 5px 12px;
+        border-radius: 6px;
+        z-index: 1000;
+      }
+
+      .sidebar.closed {
+        width: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      /* MAIN */
+      .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .navbar {
+        height: 65px;
+        background: #fff;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 20px;
+        padding: 0 25px;
+      }
+
+      .profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      .profile img {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 2px solid #3b82f6;
+      }
+
+      #logoutDesktop {
+        background: #ef4444;
+        color: white;
+        padding: 7px 15px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      #logoutDesktop:hover {
+        background: #dc2626;
+      }
+
+      .content {
+        margin: 20px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        height: calc(100vh - 140px);
+        overflow: hidden;
+      }
+
+      .table-wrapper {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 600px;
+      }
+      th,
+      td {
+        border: 1px solid #333;
+        padding: 10px;
+        text-align: center;
+      }
+      th {
+        background: #a3d66f;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          flex-direction: column;
+        }
+        .sidebar {
+          position: fixed;
+          left: 0;
+          top: 0;
+          height: 100vh;
+          z-index: 999;
+        }
+        #toggleBtn {
+          display: block;
+        }
+        #logoutDesktop {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+      <h3>Admin Menu</h3>
+      <a href="adminhome.html">🏠 Home</a>
+      <a href="adminuser.html">🙎‍♂️ Total Users</a>
+      <a href="admintimetable.html">🗓️ Total Timetable</a>
+      <!-- <a href="adminpayment.html"><i>💵</i> Total_payment</a>   -->
+    </div>
+
+    <div id="toggleBtn">☰</div>
+
+    <!-- MAIN -->
+    <div class="main-content">
+      <!-- NAVBAR -->
+      <div class="navbar">
+        <div class="profile" data-bs-toggle="dropdown">
+          <img src="sc1.png" />
+          <span id="navbarName">Loading...</span>
+        </div>
+
+        <button id="logoutDesktop">Logout</button>
+
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li>
+            <a class="dropdown-item text-danger" href="#" id="logoutMobile"
+              >Logout</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <h4 style="margin-left: 20px; margin-top: 10px">
+        Timetable Generation History
+      </h4>
+
+      <div class="content">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Institute Name</th>
+                <th>User Name</th>
+                <th>Total Timetables Generated</th>
+              </tr>
+            </thead>
+            <tbody id="timetableTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      /* SIDEBAR TOGGLE */
+      const sidebar = document.getElementById("sidebar");
+      document.getElementById("toggleBtn").onclick = () => {
+        sidebar.classList.toggle("closed");
+      };
+
+      /* AUTH CHECK */
+      const token = localStorage.getItem("token");
+      if (!token) {
+        window.location.href = "login1.html";
+      }
+
+      /* LOAD ADMIN PROFILE */
+      fetch("/api/user/profile", {
+        headers: { Authorization: "Bearer " + token },
+      })
+        .then((res) => res.json())
+        .then((user) => {
+          if (!user.username) {
+            localStorage.removeItem("token");
+            window.location.href = "login1.html";
+          }
+
+          if (user.username.toLowerCase() !== "admin") {
+            alert("Access Denied");
+            window.location.href = "home.html";
+          }
+
+          document.getElementById("navbarName").textContent =
+            user.username + " ▼";
+        });
+
+      /* LOGOUT */
+      document.getElementById("logoutDesktop").onclick = logout;
+      document.getElementById("logoutMobile").onclick = logout;
+
+      function logout() {
+        localStorage.removeItem("token");
+        window.location.href = "login1.html";
+      }
+
+      /* LOAD TIMETABLE DETAILS */
+      fetch("/api/admin/timetables/details", {
+        headers: { Authorization: "Bearer " + token },
+      })
+        .then((res) => res.json())
+        .then((list) => {
+          let rows = "";
+          list.forEach((t) => {
+            rows += `
+      <tr>
+        <td>${t.instituteName}</td>
+        <td>${t.username}</td>
+        <td>${t.totalGenerated}</td>
+      </tr>`;
+          });
+          document.getElementById("timetableTableBody").innerHTML = rows;
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+# Maven
+/target/
+
+# IDE folders
+/.idea/
+.metadata/
+.project
+.classpath
+.settings/
+
+# Eclipse / VS Code
+bin/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Env
+.env
